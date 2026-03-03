@@ -1,3 +1,6 @@
 spring:
   application:
     name: url-shortener-service
+  jpa:
+    hibernate:
+      ddl-auto: update

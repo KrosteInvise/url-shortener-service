@@ -13,7 +13,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/redirect")
+@RequestMapping("/")
 public class RedirectController {
 
     private final UrlService urlService;
