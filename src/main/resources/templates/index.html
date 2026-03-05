@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Сокращатель ссылок</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+        form { margin-bottom: 20px; }
+        input { padding: 10px; width: 300px; }
+        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; }
+        .result { font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+<h1>Сократи свою ссылку</h1>
+
+<form th:action="@{/}" method="post">
+    <input type="url" name="longUrl" placeholder="Вставь ссылку сюда..." required>
+    <button type="submit">Сократить</button>
+</form>
+
+<div th:if="${shortUrl}" class="result">
+    Твоя ссылка: <a th:href="${shortUrl}" th:text="${shortUrl}" target="_blank"></a>
+</div>
+</body>
+</html>
