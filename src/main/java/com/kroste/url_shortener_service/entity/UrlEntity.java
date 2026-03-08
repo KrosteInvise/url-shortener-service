@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -23,4 +25,7 @@ public class UrlEntity {
 
     @Column(unique = true)
     private String shortKey;
+
+    @Column(nullable = false)
+    private LocalDate createdAt;
 }

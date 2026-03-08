@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -43,6 +44,7 @@ public class UrlServiceImpl implements UrlService {
     private ShortenResponse createNewShortLink(String longUrl) {
         UrlEntity entity = new UrlEntity();
         entity.setLongUrl(longUrl);
+        entity.setCreatedAt(LocalDate.now());
         entity = urlRepository.save(entity);
 
         String key = Base62Converter.encode(entity.getId());

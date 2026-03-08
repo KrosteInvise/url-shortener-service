@@ -2,7 +2,7 @@
 <project version="4">
   <component name="AmplicodePersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit moduleName="url-shortener-service" name="Default">
+      <persistence-unit moduleName="url-shortener-service" name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog/db.changelog-master.xml">
         <packages>
           <package value="com.kroste.url_shortener_service" />
         </packages>

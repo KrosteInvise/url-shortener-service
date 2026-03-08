@@ -11,5 +11,5 @@ public interface UrlRepository extends JpaRepository<UrlEntity, Long> {
 
     Optional<UrlEntity> findByLongUrl(String longUrl);
 
-    //void deleteByCreatedAtBefore(LocalDateTime expiryDate);
+    void deleteByCreatedAtBefore(LocalDateTime expiryDate);
 }
