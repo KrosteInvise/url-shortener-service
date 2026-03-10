@@ -10,11 +10,11 @@
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="long_url" type="VARCHAR(2048)">
+            <column name="long_url" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
-            <column name="short_key" type="VARCHAR(10)">
-                <constraints unique="true" nullable="false"/>
+            <column name="short_key" type="VARCHAR">
+                <constraints unique="true"/>
             </column>
         </createTable>
 

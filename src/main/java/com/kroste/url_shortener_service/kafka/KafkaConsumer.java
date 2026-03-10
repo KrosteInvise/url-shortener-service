@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaConsumer {
 
-    @KafkaListener(topics = "link-clicks", groupId = "url-shortener-group")
+    @KafkaListener(topics = "${app.kafka.topics.link-clicks:link-clicks}", groupId = "${spring.kafka.consumer.group-id:url-shortener-group}")
     public void listen(String shortKey) {
         log.info("Catch click by link: {}", shortKey);
         //urlRepository.incrementClick(shortKey); позже сделаю метод
