@@ -3,6 +3,7 @@ package com.kroste.url_shortener_service.service;
 import com.kroste.url_shortener_service.dto.ShortenRequest;
 import com.kroste.url_shortener_service.dto.ShortenResponse;
 import com.kroste.url_shortener_service.entity.UrlEntity;
+import com.kroste.url_shortener_service.exception.LinkExpiredException;
 import com.kroste.url_shortener_service.repository.UrlRepository;
 import com.kroste.url_shortener_service.util.Base62Converter;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +28,7 @@ public class UrlServiceImpl implements UrlService {
     public ShortenResponse shortenUrl(ShortenRequest request) {
         return urlRepository.findByLongUrl(request.getLongUrl())
                 .map(existing -> new ShortenResponse(existing.getLongUrl(), DOMAIN + existing.getShortKey()))
-                .orElseGet(() -> createNewShortLink(request.getLongUrl()));
+                .orElseGet(() -> createNewShortLink(request.getLongUrl(), request.getTtlDays()));
     }
 
     @Override
@@ -36,14 +37,20 @@ public class UrlServiceImpl implements UrlService {
     public String getLongUrl(String shortKey) {
         log.info("Going to base for key: {}", shortKey);
         return urlRepository.findByShortKey(shortKey)
-                .map(UrlEntity::getLongUrl)
+                .map(entity -> {
+                    if (entity.isExpired()) {
+                        throw new LinkExpiredException("Short link expired: " + shortKey);
+                    }
+                    return entity.getLongUrl();
+                })
                 .orElseThrow(() -> new EntityNotFoundException("Short link not found: " + shortKey));
     }
 
-    private ShortenResponse createNewShortLink(String longUrl) {
+    private ShortenResponse createNewShortLink(String longUrl, Integer ttlDays) {
         UrlEntity entity = new UrlEntity();
         entity.setLongUrl(longUrl);
         entity.setCreatedAt(LocalDateTime.now());
+        entity.setExpiresAt(LocalDateTime.now().plusDays(ttlDays));
         entity = urlRepository.save(entity);
 
         String key = Base62Converter.encode(entity.getId());
