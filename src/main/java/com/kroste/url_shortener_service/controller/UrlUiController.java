@@ -19,18 +19,21 @@ public class UrlUiController {
     private final UrlService urlService;
 
     @GetMapping
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("selectedTtl", 7);
         return "index";
     }
 
     @PostMapping
-    public String shorten(@RequestParam String longUrl, Model model) {
+    public String shorten(@RequestParam String longUrl, @RequestParam Integer ttlDays, Model model) {
         ShortenRequest request = new ShortenRequest();
         request.setLongUrl(longUrl);
+        request.setTtlDays(ttlDays);
 
         ShortenResponse response = urlService.shortenUrl(request);
 
-        model.addAttribute("shortUrl", response.getShortUrl());
+        model.addAttribute("shortUrl", response.shortUrl());
+        model.addAttribute("selectedTtl", ttlDays);
 
         return "index";
     }

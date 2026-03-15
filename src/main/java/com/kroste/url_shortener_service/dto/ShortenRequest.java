@@ -2,8 +2,8 @@ package com.kroste.url_shortener_service.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import org.hibernate.validator.constraints.URL;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 @Data
 public class ShortenRequest {

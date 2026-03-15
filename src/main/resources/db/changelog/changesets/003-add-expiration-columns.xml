@@ -7,7 +7,6 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="3" author="dev">
         <addColumn tableName="urls">
-            <column name="created_at" type="timestamp"/>
             <column name="expires_at" type="timestamp"/>
         </addColumn>
 

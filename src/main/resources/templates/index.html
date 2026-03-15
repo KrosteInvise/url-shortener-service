@@ -5,8 +5,8 @@
     <title>Сокращатель ссылок</title>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
-        form { margin-bottom: 20px; }
-        input { padding: 10px; width: 300px; }
+        form { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+        input, select { padding: 10px; width: 320px; }
         button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; }
         .result { font-weight: bold; color: green; }
     </style>
@@ -16,6 +16,14 @@
 
 <form th:action="@{/}" method="post">
     <input type="url" name="longUrl" placeholder="Вставь ссылку сюда..." required>
+
+    <label for="ttlDays">Срок действия ссылки:</label>
+    <select id="ttlDays" name="ttlDays" required>
+        <option value="1" th:selected="${selectedTtl == 1}">1 день</option>
+        <option value="7" th:selected="${selectedTtl == 7}">7 дней</option>
+        <option value="30" th:selected="${selectedTtl == 30}">30 дней</option>
+    </select>
+
     <button type="submit">Сократить</button>
 </form>
 

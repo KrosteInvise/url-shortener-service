@@ -23,6 +23,7 @@ public class RedirectController {
     @GetMapping("/{shortKey}")
     public ResponseEntity<Void> redirect(@PathVariable String shortKey) {
         String longUrl = urlService.getLongUrl(shortKey);
+        urlService.incrementStats(shortKey);
 
         kafkaProducer.sendClickEvent(shortKey);
 

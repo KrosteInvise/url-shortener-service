@@ -2,6 +2,7 @@ package com.kroste.url_shortener_service.service;
 
 import com.kroste.url_shortener_service.dto.ShortenRequest;
 import com.kroste.url_shortener_service.dto.ShortenResponse;
+import com.kroste.url_shortener_service.dto.UrlStatsResponse;
 import com.kroste.url_shortener_service.entity.UrlEntity;
 import com.kroste.url_shortener_service.exception.LinkExpiredException;
 import com.kroste.url_shortener_service.repository.UrlRepository;
@@ -32,6 +33,32 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
+    @Transactional
+    public void incrementStats(String shortKey) {
+        UrlEntity entity = urlRepository.findByShortKey(shortKey)
+                .orElseThrow(() -> new EntityNotFoundException("Short link not found: " + shortKey));
+
+        entity.setClickCount(entity.getClickCount() + 1);
+        entity.setLastAccessedAt(LocalDateTime.now());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UrlStatsResponse getStats(String shortKey) {
+        UrlEntity entity = urlRepository.findByShortKey(shortKey)
+                .orElseThrow(() -> new EntityNotFoundException("Short link not found: " + shortKey));
+
+        return new UrlStatsResponse(
+                entity.getShortKey(),
+                entity.getLongUrl(),
+                entity.getClickCount(),
+                entity.getLastAccessedAt(),
+                entity.getCreatedAt(),
+                entity.getExpiresAt()
+        );
+    }
+
+    @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "urls", key = "#shortKey")
     public String getLongUrl(String shortKey) {
@@ -51,6 +78,7 @@ public class UrlServiceImpl implements UrlService {
         entity.setLongUrl(longUrl);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setExpiresAt(LocalDateTime.now().plusDays(ttlDays));
+        entity.setClickCount(0);
         entity = urlRepository.save(entity);
 
         String key = Base62Converter.encode(entity.getId());

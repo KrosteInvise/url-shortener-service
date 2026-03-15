@@ -8,4 +8,5 @@
     <include file="db/changelog/changesets/001-init-schema.xml"/>
     <include file="db/changelog/changesets/002-add-created-at.xml"/>
     <include file="db/changelog/changesets/003-add-expiration-columns.xml"/>
+    <include file="db/changelog/changesets/004-add-url-stats.xml"/>
 </databaseChangeLog>
